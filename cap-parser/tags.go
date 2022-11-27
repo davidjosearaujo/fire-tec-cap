@@ -52,6 +52,18 @@ type Parameter struct{
 	Value			string		`xml:"value"`
 }
 
+type EventCode struct{
+	XMLName  		xml.Name	`xml:"eventCode"`
+	ValueName		string		`xml:"valueName"`
+	Value			string		`xml:"value"`
+}
+
+type Geocode struct{
+	XMLName  		xml.Name	`xml:"geocode"`
+	ValueName		string		`xml:"valueName"`
+	Value			string		`xml:"value"`
+}
+
 type Resource struct {
 	XMLName  		xml.Name	`xml:"resource"`
 	ResourceDesc	string		`xml:"resourceDesc"`
@@ -67,7 +79,7 @@ type Area struct {
 	AreaDesc		string		`xml:"areaDesc"`
 	Polygons		[]string	`xml:"polygon"`
 	Circles			[]string	`xml:"circle"`
-	Geocodes		[]Parameter	`xml:"geocode"`
+	Geocodes		[]Geocode	`xml:"geocode"`
 	Altitude		string		`xml:"altitude"`
 	Ceiling			string		`xml:"ceiling"`
 }

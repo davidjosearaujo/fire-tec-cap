@@ -8,16 +8,23 @@ import (
 )
 
 func main() {
-    xmlFile, err := os.Open("example1.xml")
+    var alertObject Alert
+    parser("example1.xml", &alertObject)
+    fmt.Println(alertObject)
+}
+
+func parser(filePath string, alertObject *Alert) {
+    xmlFile, err := os.Open(filePath)
     if err != nil {
         fmt.Println(err)
     }
     defer xmlFile.Close()
-
     byteValue, _ := ioutil.ReadAll(xmlFile)
+    xml.Unmarshal(byteValue, &alertObject)
+}
 
-    var alert Alert
-    xml.Unmarshal(byteValue, &alert)
-
-    fmt.Println(alert)
+func deparser(alert Alert, outFilePath string) {
+    // validation
+    byteValue, _ := xml.Marshal(alert)
+    os.WriteFile(outFilePath, byteValue, 0664)
 }
