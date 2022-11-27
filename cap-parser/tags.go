@@ -14,11 +14,11 @@ type Alert struct {
 	MsgType			string		`xml:"msgType"`
 	Source			string		`xml:"source"`
 	Scope			string		`xml:"scope"`
-	Code			string		`xml:"code"`
-	ReferencesId	[]string	`xml:"referencesId"`	
-	Addresses		[]string	`xml:"addresses"`
+	Codes			[]string	`xml:"code"`
+	ReferencesIds	[]string	`xml:"referencesId"`	
+	Address			string		`xml:"addresses"`
 	Infos			[]Info		`xml:"info"`
-	IncidentsId		[]string	`xml:"incidents"`
+	IncidentsIds	[]string	`xml:"incidents"`
 }
 
 type Info struct{
@@ -26,7 +26,7 @@ type Info struct{
 	Language		string		`xml:"language"`
 	Category		string		`xml:"category"`
 	Event			string		`xml:"event"`
-	ResponseType	string		`xml:"responseType"`
+	ResponsesType	[]string	`xml:"responseType"`
 	Urgency			string		`xml:"urgency"`
 	Severity		string		`xml:"severity"`
 	Certainty		string		`xml:"certainty"`
@@ -76,7 +76,7 @@ type Resource struct {
 
 type Area struct {
 	XMLName  		xml.Name	`xml:"area"`
-	AreaDesc		string		`xml:"areaDesc"`
+	AreasDesc		string		`xml:"areaDesc"`
 	Polygons		[]string	`xml:"polygon"`
 	Circles			[]string	`xml:"circle"`
 	Geocodes		[]Geocode	`xml:"geocode"`
