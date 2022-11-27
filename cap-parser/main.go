@@ -11,6 +11,14 @@ func main() {
     var alertObject Alert
     parser("example1.xml", &alertObject)
     fmt.Println(alertObject)
+    
+    /* FIXME 
+    Output XML file, incorrect in alert tag, needs to
+    clean tags with empty inner value
+
+    deparser(alertObject, "test.xml")
+    
+    */
 }
 
 func parser(filePath string, alertObject *Alert) {
@@ -18,6 +26,7 @@ func parser(filePath string, alertObject *Alert) {
     if err != nil {
         fmt.Println(err)
     }
+    // validation
     defer xmlFile.Close()
     byteValue, _ := ioutil.ReadAll(xmlFile)
     xml.Unmarshal(byteValue, &alertObject)
