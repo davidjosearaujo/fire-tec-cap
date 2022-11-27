@@ -20,6 +20,7 @@ func main() {
                 file, _ := json.MarshalIndent(alertObject, "", "\t")
                 _ = ioutil.WriteFile(outfile, file, 0644)
             case "--deparse":
+                // FEATURE - Still have to add a parser for json
                 deparser(alertObject, outfile)
         }
     }else{
