@@ -1,0 +1,107 @@
+{
+	"XMLName": {
+		"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+		"Local": "alert"
+	},
+	"Xmlns": "urn:oasis:names:tc:emergency:cap:1.2",
+	"Identifier": "TRI13970876.2",
+	"Sender": "trinet@caltech.edu",
+	"Sent": "2003-06-11T20:56:00-07:00",
+	"Status": "Actual",
+	"MsgType": "Update",
+	"Source": null,
+	"Scope": "Public",
+	"Restriction": null,
+	"Addresses": null,
+	"Codes": null,
+	"Note": null,
+	"References": "trinet@caltech.edu,TRI13970876.1,2003-06-11T20:30:00-07:00",
+	"Incidents": null,
+	"Infos": [
+		{
+			"XMLName": {
+				"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+				"Local": "info"
+			},
+			"Language": null,
+			"Category": [
+				"Geo"
+			],
+			"Event": "Earthquake",
+			"ResponsesType": null,
+			"Urgency": "Past",
+			"Severity": "Minor",
+			"Certainty": "Observed",
+			"Audience": null,
+			"EventCode": null,
+			"Effective": null,
+			"Onset": null,
+			"Expires": null,
+			"SenderName": "Southern California Seismic Network (TriNet) operated by Caltech and USGS",
+			"Headline": "EQ 3.4 Imperial County CA",
+			"Description": "A minor earthquake measuring 3.4 on the Richter scale occurred near Brawley, California at 8:53 PM Pacific Daylight Time on Wednesday, June 11, 2003. (This event has now been reviewed by a seismologist)",
+			"Instruction": null,
+			"Web": "http://www.trinet.org/scsn/scsn.html",
+			"Contact": null,
+			"Parameters": [
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "parameter"
+					},
+					"ValueName": "EventID",
+					"Value": "13970876"
+				},
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "parameter"
+					},
+					"ValueName": "Version",
+					"Value": "1"
+				},
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "parameter"
+					},
+					"ValueName": "Magnitude",
+					"Value": "3.4 Ml"
+				},
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "parameter"
+					},
+					"ValueName": "Depth",
+					"Value": "11.8 mi."
+				},
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "parameter"
+					},
+					"ValueName": "Quality",
+					"Value": "Excellent"
+				}
+			],
+			"Resources": null,
+			"Areas": [
+				{
+					"XMLName": {
+						"Space": "urn:oasis:names:tc:emergency:cap:1.2",
+						"Local": "area"
+					},
+					"AreasDesc": "1 mi. WSW of Brawley, CA; 11 mi. N of El Centro, CA; 30 mi. E of OCOTILLO (quarry); 1 mi. N of the Imperial Fault",
+					"Polygons": null,
+					"Circles": [
+						"32.9525,-115.5527 0"
+					],
+					"Geocodes": null,
+					"Altitude": null,
+					"Ceiling": null
+				}
+			]
+		}
+	]
+}

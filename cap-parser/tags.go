@@ -15,7 +15,7 @@ type Alert struct {
 	Source      *string   `xml:"source"`
 	Scope       *string   `xml:"scope"`
 	Restriction *string   `xml:"restriction"`
-	Address     *string   `xml:"addresses"`
+	Addresses   *string   `xml:"addresses"`
 	Codes       *[]string `xml:"code"`
 	Note        *string   `xml:"note"`
 	References  *string   `xml:"references"`
