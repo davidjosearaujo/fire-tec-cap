@@ -90,7 +90,7 @@
                     <enumeration value = "Evacuate"/>
                     <enumeration value = "Prepare"/>
                     <enumeration value = "Execute"/>
-		     		<enumeration value = "Avoid"/>
+		     		        <enumeration value = "Avoid"/>
                     <enumeration value = "Monitor"/>
                     <enumeration value = "Assess"/>
                     <enumeration value = "AllClear"/>

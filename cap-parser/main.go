@@ -9,7 +9,7 @@ import (
 
 func main() {
     var alertObject Alert
-    parser("example1.xml", &alertObject)
+    parser("example3.xml", &alertObject)
     /* FIXME 
     Output XML file, incorrect in alert tag, needs to
     clean tags with empty inner value
