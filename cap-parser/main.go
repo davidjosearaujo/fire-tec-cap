@@ -1,7 +1,6 @@
 package main
 
 import (
-	//"bytes"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -9,25 +8,22 @@ import (
 )
 
 func main() {
-        var alertObject Alert
-        infile := os.Args[1]
-        outfile := os.Args[2]
-        parser(infile, &alertObject)
-        deparser(alertObject, outfile)
+    var alertObject Alert
+    Parser(os.Args[1], &alertObject)
+    Deparser(alertObject, os.Args[2])
 }
 
-func parser(filePath string, alertObject *Alert) {
-    xmlFile, err := os.Open(filePath)
+func Parser(inFilePath string, alertObject *Alert) {
+    xmlFile, err := os.Open(inFilePath)
     if err != nil {
         fmt.Println(err)
     }
-    // validation
     defer xmlFile.Close()
     byteValue, _ := ioutil.ReadAll(xmlFile)
     xml.Unmarshal(byteValue, &alertObject)
 }
 
-func deparser(alert Alert, outFilePath string) {
+func Deparser(alert Alert, outFilePath string) {
     byteValue, _ := xml.Marshal(alert)
     ioutil.WriteFile(outFilePath, byteValue, 0664)
 }

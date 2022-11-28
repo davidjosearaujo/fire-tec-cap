@@ -5,26 +5,29 @@ import (
 )
 
 type Alert struct {
-	XMLName     xml.Name  `xml:"alert"`
-	Xmlns       *string   `xml:"xmlns,attr"`
-	Identifier  *string   `xml:"identifier"`
-	Sender      *string   `xml:"sender"`
-	Sent        *string   `xml:"sent"`
-	Status      *string   `xml:"status"`
-	MsgType     *string   `xml:"msgType"`
-	Source      *string   `xml:"source"`
-	Scope       *string   `xml:"scope"`
-	Restriction *string   `xml:"restriction"`
-	Addresses   *Addresses   `xml:"addresses"`
-	Codes       *[]string `xml:"code"`
-	Note        *string   `xml:"note"`
-	References  *string   `xml:"references"`
-	Incidents   *string   `xml:"incidents"`
-	Infos       *[]Info   `xml:"info"`
+	XMLName     xml.Name  	`xml:"alert"`
+	Xmlns       *string   	`xml:"xmlns,attr"`
+	Identifier  *string   	`xml:"identifier"`
+	Sender      *string   	`xml:"sender"`
+	Sent        *string   	`xml:"sent"`
+	Status      *string   	`xml:"status"`
+	MsgType     *string   	`xml:"msgType"`
+	Source      *string   	`xml:"source"`
+	Scope       *string   	`xml:"scope"`
+	Restriction *string   	`xml:"restriction"`
+	Addresses   *Addresses	`xml:"addresses"`
+	Codes       *[]string 	`xml:"code"`
+	Note        *Note     	`xml:"note"`
+	References  *string   	`xml:"references"`
+	Incidents   *string   	`xml:"incidents"`
+	Infos       *[]Info   	`xml:"info"`
 }
 
-// Needed to escape the use of double quotes inside <addresses> tag
 type Addresses struct{
+	Content		string		`xml:",innerxml"`
+}
+
+type Note struct{
 	Content		string		`xml:",innerxml"`
 }
 
