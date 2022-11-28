@@ -15,12 +15,17 @@ type Alert struct {
 	Source      *string   `xml:"source"`
 	Scope       *string   `xml:"scope"`
 	Restriction *string   `xml:"restriction"`
-	Addresses   *string   `xml:"addresses"`
+	Addresses   *Addresses   `xml:"addresses"`
 	Codes       *[]string `xml:"code"`
 	Note        *string   `xml:"note"`
 	References  *string   `xml:"references"`
 	Incidents   *string   `xml:"incidents"`
 	Infos       *[]Info   `xml:"info"`
+}
+
+// Needed to escape the use of double quotes inside <addresses> tag
+type Addresses struct{
+	Content		string		`xml:",innerxml"`
 }
 
 type Info struct {
