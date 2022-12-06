@@ -1,29 +1,12 @@
 package main
 
 import (
-	"encoding/xml"
-	"fmt"
-	"io/ioutil"
 	"os"
+    "github.com/DavidAraujo98/cap-parser"
 )
 
 func main() {
-    var alertObject Alert
-    Parser(os.Args[1], &alertObject)
-    Deparser(alertObject, os.Args[2])
-}
-
-func Parser(inFilePath string, alertObject *Alert) {
-    xmlFile, err := os.Open(inFilePath)
-    if err != nil {
-        fmt.Println(err)
-    }
-    defer xmlFile.Close()
-    byteValue, _ := ioutil.ReadAll(xmlFile)
-    xml.Unmarshal(byteValue, &alertObject)
-}
-
-func Deparser(alert Alert, outFilePath string) {
-    byteValue, _ := xml.Marshal(alert)
-    ioutil.WriteFile(outFilePath, byteValue, 0664)
+    var alertObject cap.Alert
+    cap.Parser(os.Args[1], &alertObject)
+    cap.Deparser(alertObject, os.Args[2])
 }
