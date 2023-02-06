@@ -3,12 +3,18 @@
 
 #include "enums.h"
 
+typedef struct Geocode
+{
+    char *valueName;
+    char *value;
+} Geocode;
+
 typedef struct Area
 {
     char *areaDesc;
     char *polygon;
     char *circle;
-    char *geocode;
+    Geocode *geocode;
     char *altitude;
     char *ceiling;
 } Area;
@@ -29,6 +35,12 @@ typedef struct Parameter
     char *value;
 } Parameter;
 
+typedef struct EventCode
+{
+    char *valueName;
+    char *value;
+} EventCode;
+
 typedef struct Info
 {
     char *language;
@@ -39,7 +51,7 @@ typedef struct Info
     Severity severity;
     Certainty certainty;
     char *audience;
-    char *eventCode;
+    EventCode* eventCode;
     char *effective;
     char *onset;
     char *expires;

@@ -12,7 +12,7 @@ typedef enum Status
 
 typedef enum MsgType
 {
-    Alert,
+    Alert_M,
     Update,
     Cancel,
     Ack,
@@ -61,7 +61,7 @@ typedef enum Urgency
     Expected,
     Future,
     Past,
-    Unknown
+    Unknown_U
 } Urgency;
 
 typedef enum Severity
@@ -70,7 +70,7 @@ typedef enum Severity
     Severe,
     Moderate,
     Minor,
-    Unknown
+    Unknown_S
 } Severity;
 
 typedef enum Certainty
@@ -79,7 +79,7 @@ typedef enum Certainty
     Likely,
     Possible,
     Unlikely,
-    Unknown
+    Unknown_C
 } Certainty;
 
 #endif
