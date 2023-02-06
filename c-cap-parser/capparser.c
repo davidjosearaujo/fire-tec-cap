@@ -8,6 +8,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+#include "capparser.h"
+
 int main(int argc, char **argv)
 {
     xmlDoc *document;
