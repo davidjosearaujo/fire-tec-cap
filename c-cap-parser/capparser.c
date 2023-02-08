@@ -1,46 +1,41 @@
 /*
-    To compile: gcc -Wall -I/usr/include/libxml -o parser parser.c -lxml2
-    To run: ./parser <filename.xml>
+    To compile: gcc -Wall -I/usr/include/libxml -o capparser capparser.c -lxml2
+    To run: ./capparser <filename.xml>
 */
 #include "capparser.h"
 
+xmlDoc *document;
 
-xmlDoc* document;
-xmlNode *root, *first_child, *node;
-
-Alert parseFromFile(char* fileName){
+Alert parseFromFile(char *fileName)
+{
+    xmlNode *root;
     document = xmlReadFile(fileName, NULL, 0);
     root = xmlDocGetRootElement(document);
     recursiveParser(root);
 }
 
-Alert parseFromString(char* stringXML){
+Alert parseFromString(char *stringXML)
+{
     printf("Hi");
 }
 
-Alert recursiveParser(xmlNode* root){
+Alert recursiveParser(xmlNode *root)
+{
+    xmlNode *child;
     printf("Root: %s\n", root->name);
-    if (root->children != NULL){
-        first_child = root->children;
-        printf("First child: %s\n", first_child->name);
-        for (node = first_child; node; node = node->next)
-        {
-            // FIX: Need another way to check if node has children, this causes a segfault
-            if (node->children != NULL){
-                printf("Tag: %s\n\n", node->name);
-                recursiveParser(node);
-            }
-            else{
-                printf("Tag: %s and content: %s", node->name, xmlNodeGetContent(node));
-            }
-            
-        }
+    for (child = root->children; child; child = child->next)
+    {
+        printf("Child: %s\n", child->name);
+        if (child->children != NULL)
+            recursiveParser(child);
+
+        if (child->next == NULL)
+            break;
     }
 }
 
 int main(int argc, char **argv)
 {
-    xmlDoc *document;
     xmlNode *root, *first_child, *node;
     char *filename;
 
@@ -61,7 +56,6 @@ int main(int argc, char **argv)
     for (node = first_child; node; node = node->next)
     {
         fprintf(stdout, "\t Child is <%s> and content: %s\n", node->name, xmlNodeGetContent(node));
-
     }
     fprintf(stdout, "...\n");
     return 0;
