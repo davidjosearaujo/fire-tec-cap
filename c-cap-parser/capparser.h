@@ -11,7 +11,7 @@
 
 Alert parseFromFile(char *fileName);
 Alert parseFromString(char *stringXML);
-Alert recursiveParser(xmlNode *root);
+void* recursiveParser(xmlNode *root);
 char *deparse(Alert *alert);
 
 #endif
