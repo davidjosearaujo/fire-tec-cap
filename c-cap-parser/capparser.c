@@ -6,17 +6,12 @@
 
 xmlDoc *document;
 
-int parseFromFile(char *fileName)
+Data parseFromFile(char *fileName)
 {
     xmlNode *root;
     document = xmlReadFile(fileName, NULL, 0);
     root = xmlDocGetRootElement(document);
     recursiveParser(root);
-}
-
-int parseFromString(char *stringXML)
-{
-    printf("Hi");
 }
 
 // TODO - This function will only read the fields of interest, not the whole XML
