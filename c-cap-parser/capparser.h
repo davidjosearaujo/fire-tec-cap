@@ -6,12 +6,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-#include "elements.h"
-#include "enums.h"
-
-Alert parseFromFile(char *fileName);
-Alert parseFromString(char *stringXML);
-void* recursiveParser(xmlNode *root);
-char *deparse(Alert *alert);
+int parseFromFile(char *fileName);
+int parseFromString(char *stringXML);
+void recursiveParser(xmlNode *root);
 
 #endif
