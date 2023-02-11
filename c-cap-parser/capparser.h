@@ -10,6 +10,7 @@ typedef struct Frequency
 {
     char *name;
     float frequency;
+    Frequency *next;
 } Frequency;
 
 typedef struct Audio
@@ -20,8 +21,9 @@ typedef struct Audio
 
 typedef struct Data
 {
-    Frequency *frequency;
-    Audio *audio;
+    int n_frequencies;
+    void *frequency;
+    void *audio;
 } Data;
 
 Data parseFromFile(char *fileName);

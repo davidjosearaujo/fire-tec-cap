@@ -11,11 +11,12 @@ Data parseFromFile(char *fileName)
     xmlNode *root;
     document = xmlReadFile(fileName, NULL, 0);
     root = xmlDocGetRootElement(document);
-    recursiveParser(root);
+    Data data;
+    recursiveParser(&data, root);
 }
 
 // TODO - This function will only read the fields of interest, not the whole XML
-void recursiveParser(xmlNode *root)
+void recursiveParser(Data* data, xmlNode *root)
 {
     xmlNode *child;
 
@@ -24,9 +25,15 @@ void recursiveParser(xmlNode *root)
     for (child = root->children; child; child = child->next)
     {
         if (child->children != NULL)
+            if (child->name == "parameter"){
+                data->n_frequencies++;
+            }
             recursiveParser(child);
         else
         {
+            if (root->name == "parameter"){
+                
+            }
             printf("\t Child is <%s> and content: %s\n", child->name, xmlNodeGetContent(child));
         }
     }
