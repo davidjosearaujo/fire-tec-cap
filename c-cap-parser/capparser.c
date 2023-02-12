@@ -11,30 +11,48 @@ Data parseFromFile(char *fileName)
     xmlNode *root;
     document = xmlReadFile(fileName, NULL, 0);
     root = xmlDocGetRootElement(document);
+
     Data data;
+    data.frequency = NULL;
+    data.audio = NULL;
     recursiveParser(&data, root);
+    return data;
 }
 
-// TODO - This function will only read the fields of interest, not the whole XML
-void recursiveParser(Data* data, xmlNode *root)
+void recursiveParser(Data *data, xmlNode *root)
 {
     xmlNode *child;
-
-    printf("Root is <%s>\n", root->name);
-
     for (child = root->children; child; child = child->next)
     {
-        if (child->children != NULL)
-            if (child->name == "parameter"){
-                data->n_frequencies++;
-            }
-            recursiveParser(child);
-        else
+        if (xmlStrEqual(child->name, (const xmlChar *)"parameter"))
         {
-            if (root->name == "parameter"){
-                
+            Frequency *newFreq = (Frequency *)malloc(sizeof(Frequency));
+            newFreq->name = (char *)xmlNodeGetContent(child->children);
+            newFreq->frequency = (char *)xmlNodeGetContent(child->children->next);
+            newFreq->next = NULL;
+
+            Frequency *currentFreq = (Frequency *)data->frequency;
+            if (currentFreq == NULL)
+            {
+                data->frequency = newFreq;
+            }else{
+                while (currentFreq->next != NULL)
+                {
+                    currentFreq = currentFreq->next;
+                }
+                currentFreq->next = newFreq;
             }
-            printf("\t Child is <%s> and content: %s\n", child->name, xmlNodeGetContent(child));
+        }
+        else if (xmlStrEqual(child->name, (const xmlChar *)"resource"))
+        {
+            Audio *newAudio = (Audio *)malloc(sizeof(Audio));
+            newAudio->mimeType = (char *)xmlNodeGetContent(child->children->next);
+            newAudio->bytes = (char *)xmlNodeGetContent(child->children->next->next);
+            data->audio = newAudio;
+        }
+        else if (child->children != NULL)
+        {
+            recursiveParser(data, child);
         }
     }
 }

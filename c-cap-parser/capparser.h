@@ -9,8 +9,8 @@
 typedef struct Frequency
 {
     char *name;
-    float frequency;
-    Frequency *next;
+    char *frequency;
+    struct Frequency *next;
 } Frequency;
 
 typedef struct Audio
@@ -21,13 +21,11 @@ typedef struct Audio
 
 typedef struct Data
 {
-    int n_frequencies;
-    void *frequency;
-    void *audio;
+    Frequency *frequency;
+    Audio *audio;
 } Data;
 
 Data parseFromFile(char *fileName);
-// int parseFromString(char *stringXML);
-void recursiveParser(xmlNode *root);
+void recursiveParser(Data *data, xmlNode *root);
 
 #endif
