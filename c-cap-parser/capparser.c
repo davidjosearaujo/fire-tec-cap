@@ -16,6 +16,15 @@ Data parseFromFile(char *fileName)
     data.frequency = NULL;
     data.audio = NULL;
     recursiveParser(&data, root);
+
+    Frequency *temp = data.frequency;
+    while(temp){
+        printf("Name: %s, Frequency: %s\n", temp->name, temp->frequency);
+        temp = temp->next;
+    }
+
+    printf("mimeType: %s\nAudio: %s\n", data.audio->mimeType, data.audio->bytes);
+
     return data;
 }
 
