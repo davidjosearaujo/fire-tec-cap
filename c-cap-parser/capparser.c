@@ -17,14 +17,6 @@ Data parseFromFile(char *fileName)
     data.audio = NULL;
     recursiveParser(&data, root);
 
-    Frequency *temp = data.frequency;
-    while(temp){
-        printf("Name: %s, Frequency: %s\n", temp->name, temp->frequency);
-        temp = temp->next;
-    }
-
-    printf("mimeType: %s\nAudio: %s\n", data.audio->mimeType, data.audio->bytes);
-
     return data;
 }
 
@@ -66,9 +58,9 @@ void recursiveParser(Data *data, xmlNode *root)
     }
 }
 
+/* 
 int main(int argc, char **argv)
 {
-    xmlNode *root, *first_child, *node;
     char *filename;
 
     if (argc < 2)
@@ -78,17 +70,17 @@ int main(int argc, char **argv)
     }
     filename = argv[1];
 
-    parseFromFile(filename);
-    exit(0);
+    Data data = parseFromFile(filename);
 
-    document = xmlReadFile(filename, NULL, 0);
-    root = xmlDocGetRootElement(document);
-    fprintf(stdout, "Root is <%s> (%i) \n", root->name, root->type);
-    first_child = root->children;
-    for (node = first_child; node; node = node->next)
+    Frequency *temp = data.frequency;
+    while (temp)
     {
-        fprintf(stdout, "\t Child is <%s> and content: %s\n", node->name, xmlNodeGetContent(node));
+        printf("Name: %s, Frequency: %s\n", temp->name, temp->frequency);
+        temp = temp->next;
     }
-    fprintf(stdout, "...\n");
+
+    printf("mimeType: %s\nAudio: %s\n", data.audio->mimeType, data.audio->bytes);
+
     return 0;
 }
+*/
