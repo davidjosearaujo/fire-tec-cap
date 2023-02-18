@@ -1,3 +1,8 @@
+/*
+    Compiles with:  gcc -Wall -I/usr/include/libxml -o c-receiver c-receiver.c -lxml2
+    Runs with:      ./c-receiver
+*/
+
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,4 +1,6 @@
-# Echo client program
+#
+#   Runs with:  python py-sender.py
+#
 import socket
 import capparser
 
