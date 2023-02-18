@@ -6,6 +6,20 @@
 
 xmlDoc *document;
 
+Data parseFromString(char *buffer)
+{
+    xmlNode *root;
+    document = xmlParseDoc(buffer);
+    root = xmlDocGetRootElement(document);
+
+    Data data;
+    data.frequency = NULL;
+    data.audio = NULL;
+    recursiveParser(&data, root);
+
+    return data;
+}
+
 Data parseFromFile(char *fileName)
 {
     xmlNode *root;
