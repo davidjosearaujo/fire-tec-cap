@@ -1,2 +1,3 @@
 c-cap-parser/capparser
 *.vscode/
+*.o
