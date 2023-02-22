@@ -1,5 +1,5 @@
 /*
-    Compiles with:  gcc -Wall -I/usr/include/libxml -o c-receiver.o c-receiver.c -lxml2
+    Compiles with:  gcc -Wall -I/usr/include/libxml -o c-receiver c-receiver.c -lxml2
     Runs with:      ./c-receiver
 */
 
