@@ -2,41 +2,32 @@
 #include <SPI.h>
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-byte ip[] = { 10, 0, 0, 177 };
-byte server[] = { 64, 233, 187, 99 }; // Google
+byte ip[] = {192, 168, 0, 100};  // Board address
+byte gw[] = {192, 168, 0, 1};
+byte netmask[] = {255, 255, 255, 0};
 
-EthernetClient client;
+EthernetServer server = EthernetServer(50005);
 
 void setup()
 {
-  Ethernet.begin(mac, ip);
   Serial.begin(9600);
 
-  delay(1000);
-
-  Serial.println("connecting...");
-
-  if (client.connect(server, 80)) {
-    Serial.println("connected");
-    client.println("GET /search?q=arduino HTTP/1.0");
-    client.println();
-  } else {
-    Serial.println("connection failed");
-  }
+  // initialize the ethernet device
+  Ethernet.begin(mac, ip, gw, netmask);
+  Serial.println(Ethernet.localIP());
+  
+  // start listening for clients
+  server.begin();
 }
 
 void loop()
 {
-  if (client.available()) {
-    char c = client.read();
-    Serial.print(c);
+  // if an incoming client connects, there will be bytes available to read:
+  EthernetClient client = server.available();
+  if (client) {
+    Serial.println((char)client.read());
+    // read bytes from the incoming client and write them back
+    // to any clients connected to the server:
   }
-
-  if (!client.connected()) {
-    Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
-    for(;;)
-      ;
-  }
+  server.write("Bye");
 }
