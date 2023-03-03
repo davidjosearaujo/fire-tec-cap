@@ -6,6 +6,7 @@ byte ip[] = {192, 168, 0, 100};  // Board address
 byte gw[] = {192, 168, 0, 1};
 byte netmask[] = {255, 255, 255, 0};
 bool nl = false;
+int i = 0;
 
 EthernetServer server = EthernetServer(50005);
 
@@ -25,13 +26,7 @@ void loop()
 {
   // if an incoming client connects, there will be bytes available to read:
   EthernetClient client = server.available();
-  
-  int r = client.read();
-  if (r != -1) {
-    Serial.println((char)r);
-    nl = true;
-  }else if(nl){
-    Serial.println();
-    nl = false;
+  if (client) {
+    Serial.print((char)client.read());
   }
 }
