@@ -6,7 +6,7 @@ import capparser
 import sys
 from time import sleep
 
-alert = capparser.parse(filePath="../FireTec_Example.xml")
+alert = capparser.parse(filePath="../FireTec_Example_saudio.xml")
 
 addr = sys.argv[1].split(':')
 
