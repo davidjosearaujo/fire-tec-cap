@@ -37,49 +37,32 @@ void loop()
   if (client) {
     char c = client.read();
 
-    if (xml != "" || c == '<' || param || audio)
+    if (xml != "" || c == '<')
       xml.concat(c);
-
-    Serial.println("xml: " + xml);
     
     if (xml.indexOf('<') < xml.indexOf('>')){
-      String t = xml.substring(1, xml.indexOf('>'));
-
-      Serial.println("tag: " + t);
-      
-      char tag[t.length()+1];
-      t.toCharArray(tag, t.length()+1);
+      String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
 
       if (tag == "parameter"){
         param = true;
-      } else if (tag == "resource"){
+      } else if (tag == "derefUri"){
         audio = true;
       }else if (tag == "/parameter"){
         param = false;
-      }else if (tag == "/resource"){
+      }else if (tag == "/derefUri"){
         audio = false;
       }
-      
-      int opn = xml.lastIndexOf('>');
-      int cls = xml.lastIndexOf('<');
-      if (opn < cls && (param || audio)){
-          if (tag == "valueName"){
-            //Serial.println("ValueName: " + xml.substring(opn,cls));
-            xml = "";
-          }else if (tag == "value"){
-            //Serial.println("Value: " + xml.substring(opn,cls));
-            xml = "";
-          }else if (tag == "derefUri"){
-            //Serial.println("audio: " + xml.substring(opn,cls));
-            xml = "";
-          }
-      }
 
-      Serial.println(!param && !audio);
+      if (param && tag == "/valueName"){
+        String xmli = xml.substring(0, xml.length()-1);
+        Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
+      }else if (param && tag == "/value"){
+        String xmli = xml.substring(0, xml.length()-1);
+        Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
+      }
+      
       if (!param && !audio)
         xml = "";
     }
-
-    
   }
 }
