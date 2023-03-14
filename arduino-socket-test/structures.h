@@ -1,11 +1,17 @@
 #ifndef STRUCTURES
 #define STRUCTURES
 
-typedef struct Frequency
+typedef struct Parameter
 {
-    String name;
-    String frequency;
-    struct Frequency *next;
-} Frequency;
+    String valueName;
+    String value;
+    struct Parameter *next;
+} Parameter;
+
+typedef struct Audio
+{
+    String value;
+    struct Audio *next;
+} Audio;
 
 #endif

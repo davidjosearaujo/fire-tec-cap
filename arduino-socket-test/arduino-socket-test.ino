@@ -14,8 +14,17 @@ String xml = "";
 bool param = false;
 bool audio = false;
 
-// Data variables
-Frequency freqs[10];
+/* Data variables
+ * Fixed size for parameters with:
+ *  - Radio statio name;
+ *  - Program identificaion,
+ *  - Frequency list.
+ */ 
+Parameter params[3];
+int index = 0;
+
+Audio first_audio;
+Audio *temp;
 
 EthernetServer server = EthernetServer(50005);
 void setup()
@@ -55,10 +64,19 @@ void loop()
 
       if (param && tag == "/valueName"){
         String xmli = xml.substring(0, xml.length()-1);
-        Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
+        params[index].valueName = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
+        Serial.println(params[index].valueName);
       }else if (param && tag == "/value"){
         String xmli = xml.substring(0, xml.length()-1);
-        Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
+        params[index].value = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
+        Serial.println(params[index].value);
+        index++;
+      }
+
+      if (tag == "/derefUri"){
+          String xmli = xml.substring(0, xml.length()-1);
+          // TODO - Add audio to chunks in a linked list
+          Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
       }
       
       if (!param && !audio)
