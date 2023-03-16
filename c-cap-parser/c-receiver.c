@@ -1,6 +1,6 @@
 /*
     Compiles with:  gcc -Wall -I/usr/include/libxml -o c-receiver.o c-receiver.c -lxml2
-    Runs with:      ./c-receiver
+    Runs with:      ./c-receiver.o
 */
 
 #include <netinet/in.h>
@@ -69,6 +69,8 @@ int main(int argc, char const* argv[])
         temp = temp->next;
     }
     printf("mimeType: %s\nAudio: %s\n", data.audio->mimeType, data.audio->bytes);
+
+    
 
     free(res);
     // closing the connected socket
