@@ -24,10 +24,6 @@ def run():
 
     # FEATURE - Converting mp3 to wav
     byts = mp3_to_wav(myobj)
-    
-    encoded = base64.b64encode(byts)
-    decoded = base64.b64decode(encoded)
-    print(byts == decoded)
 
     # Defining new field for the next CAP xml
     resource.setDerefUri(str(base64.b64encode(byts)))
