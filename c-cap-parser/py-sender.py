@@ -1,11 +1,12 @@
 #
 #   Runs with:  python3 py-sender.py 192.168.1.100:50005
 #
+import base64
 import socket
 import capparser
 import sys, os
 from gtts import gTTS
-from pydub import AudioSegment
+#from pydub import AudioSegment
 
 def run():
     alert = capparser.parse(filePath="../FireTec_Example.xml")
@@ -22,13 +23,20 @@ def run():
     slow=False)
 
     # FEATURE - Converting mp3 to wav
-    byt_text = mp3_to_wav(myobj)
+    byts = mp3_to_wav(myobj)
+    
+    encoded = base64.b64encode(byts)
+    decoded = base64.b64decode(encoded)
+    print(byts == decoded)
 
-    # TEMP - Definning new field for the next CAP xml
-    resource.setDerefUri(byt_text)
+    # Defining new field for the next CAP xml
+    resource.setDerefUri(str(base64.b64encode(byts)))
     info.getResources()[0] = resource
     alert.getInfos()[0] = info
     capparser.writeAlertToFile(alert, "test.xml")
+    
+    # TESTING
+    exit()
 
     addr = sys.argv[1].split(':')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -40,16 +48,21 @@ def run():
 # Convert mp3 object to wav byte array text
 def mp3_to_wav(mp3_obj):
     mp3_obj.save("temp.mp3")
-    sound = AudioSegment.from_mp3("temp.mp3")
-    sound = sound.set_frame_rate(16000)
-    sound = sound.set_sample_width(1)
-    sound.export("temp.wav", format="wav")
-    byt_text = None
-    with open("temp.wav", "rb") as f:
-        byt_text = str(f.read())
+    
+    # TESTING - WAV conversion
+    #sound = AudioSegment.from_mp3("temp.mp3")
+    #sound = sound.set_frame_rate(16000)
+    #sound = sound.set_sample_width(1)
+    #sound.export("temp.wav", format="wav")
+    
+    byts = None
+    # TESTING
+    #with open("temp.wav", "rb") as f:
+    with open("temp.mp3", "rb") as f:
+        byts = f.read()
         f.close()
-    os.system("rm temp.mp3 temp.wav")
-    return byt_text
+    
+    return byts
 
 if __name__ == "__main__":
     run()
