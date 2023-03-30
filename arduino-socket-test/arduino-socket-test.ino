@@ -1,6 +1,9 @@
+#include <SHA224.h>
 #include <Ethernet.h>
 #include <SPI.h>
+#include <SD.h>
 
+#include "SAVE_WAV.h"
 #include "structures.h"
 
 // Connection
@@ -35,7 +38,9 @@ void setup()
   // initialize the ethernet device
   Ethernet.begin(mac, ip, gw, netmask);
   Serial.println(Ethernet.localIP());
-  
+
+  WAV.init();
+
   // start listening for clients
   server.begin();
 }
@@ -56,11 +61,11 @@ void loop()
       if (tag == "parameter"){
         param = true;
       } else if (tag == "derefUri"){
+        WAV.DeleteWav();
+        //WAV.CreateWav();
         audio = true;
       }else if (tag == "/parameter"){
         param = false;
-      }else if (tag == "/derefUri"){
-        audio = false;
       }
 
       if (param && tag == "/valueName"){
@@ -74,13 +79,19 @@ void loop()
         index++;
       }
 
-      // Detect end of audio
-
-      if (audio && c != '<' && c != '>'){
-        audiobyte.concat(c);
-        if(audiobyte.length() % 2 == 0){
-          Serial.println(audiobyte);
-          audiobyte = "";
+      if (audio && c != '>'){
+        if(c == '<'){
+          //WAV.CLOSE();
+          audio = false;
+        }else{
+          // Read two characters that form the hexvalue and convert them to a byte
+          audiobyte.concat(c);
+          if(audiobyte.length() % 2 == 0){
+            byte hexvalue = strtol(audiobyte.c_str(), NULL, 16);
+            Serial.println(hexvalue);
+            //WAV.SAVE(hexvalue);
+            audiobyte = "";
+          }
         }
       }
       
