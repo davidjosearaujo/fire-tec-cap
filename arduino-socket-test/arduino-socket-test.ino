@@ -61,7 +61,7 @@ void loop()
       if (tag == "parameter"){
         param = true;
       } else if (tag == "derefUri"){
-        WAV.DeleteWav();
+        //WAV.DeleteWav();
         //WAV.CreateWav();
         audio = true;
       }else if (tag == "/parameter"){
