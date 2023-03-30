@@ -13,6 +13,7 @@ byte netmask[] = {255, 255, 255, 0};
 String xml = "";
 bool param = false;
 bool audio = false;
+String audiobyte = "";
 
 /* Data variables
  * Fixed size for parameters with:
@@ -73,10 +74,14 @@ void loop()
         index++;
       }
 
-      if (tag == "/derefUri"){
-          String xmli = xml.substring(0, xml.length()-1);
-          // TODO - Add audio to chunks in a linked list
-          Serial.println(xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<')));
+      // Detect end of audio
+
+      if (audio && c != '<' && c != '>'){
+        audiobyte.concat(c);
+        if(audiobyte.length() % 2 == 0){
+          Serial.println(audiobyte);
+          audiobyte = "";
+        }
       }
       
       if (!param && !audio)
