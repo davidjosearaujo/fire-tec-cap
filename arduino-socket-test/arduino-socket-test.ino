@@ -58,13 +58,13 @@ void loop()
     if (xml.indexOf('<') < xml.indexOf('>')){
       String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
 
-      if (tag == "parameter"){
+      if (tag == "parameter" && !param){
         param = true;
-      } else if (tag == "derefUri"){
+      } else if (tag == "derefUri" && !audio){
         //WAV.DeleteWav();
         //WAV.CreateWav();
         audio = true;
-      }else if (tag == "/parameter"){
+      }else if (tag == "/parameter" && param){
         param = false;
       }
 
