@@ -89,7 +89,7 @@ void loop()
         }else{
           // Read two characters that form the hexvalue and convert them to a byte
           audiobyte.concat(c);
-          if(audiobyte.length() % 2 == 0){
+          if(audiobyte.length() == 2){
             byte hexvalue = strtol(audiobyte.c_str(), NULL, 16);
             WAV.SAVE(hexvalue);
             audiobyte = "";
