@@ -3,3 +3,4 @@ c-cap-parser/capparser
 *.o
 *venv
 *.mp3
+*.wav
