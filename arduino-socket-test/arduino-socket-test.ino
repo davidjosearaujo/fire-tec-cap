@@ -58,16 +58,18 @@ void loop()
     if (xml.indexOf('<') < xml.indexOf('>')){
       String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
 
+      // Detect tags of interest: <parameter>, </parameter> and <derefUri>
       if (tag == "parameter" && !param){
         param = true;
       } else if (tag == "derefUri" && !audio){
-        //WAV.DeleteWav();
-        //WAV.CreateWav();
+        WAV.DeleteWav();
+        WAV.CreateWav();
         audio = true;
       }else if (tag == "/parameter" && param){
         param = false;
       }
 
+      // Retrieve parameter values
       if (param && tag == "/valueName"){
         String xmli = xml.substring(0, xml.length()-1);
         params[index].valueName = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
@@ -79,17 +81,17 @@ void loop()
         index++;
       }
 
+      // Write audio file
       if (audio && c != '>'){
         if(c == '<'){
-          //WAV.CLOSE();
+          WAV.CLOSE();
           audio = false;
         }else{
           // Read two characters that form the hexvalue and convert them to a byte
           audiobyte.concat(c);
           if(audiobyte.length() % 2 == 0){
             byte hexvalue = strtol(audiobyte.c_str(), NULL, 16);
-            Serial.println(hexvalue);
-            //WAV.SAVE(hexvalue);
+            WAV.SAVE(hexvalue);
             audiobyte = "";
           }
         }

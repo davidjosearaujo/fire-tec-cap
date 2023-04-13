@@ -58,7 +58,8 @@ void SAVE_WAV::CLOSE()
     unsigned long numSamples = (file.size() - 44) / 2;
     duration = (float)numSamples / (float)(16000.0);
     file.close();
-   // Serial.print("duration:  "); Serial.println(duration);
+    Serial.println("Audio file written successfully!");
+    //Serial.print("duration:  "); Serial.println(duration);
   }
   //ler os primeiros 44 bytes, que são o cabeçalho do arquivo .wav
   //byte header[44];

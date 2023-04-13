@@ -19,7 +19,11 @@ def run():
 
     # Generating audio
     myobj = gTTS(
-        text='Welcome to geeksforgeeks!',
+        text="""To be, or not to be: that is the question:
+            Whether 'tis nobler in the mind to suffer
+            The slings and arrows of outrageous fortune,
+            Or to take arms against a sea of troubles,
+            And by opposing end them? To die: to sleep;""",
         lang='en',
         slow=False)
 
@@ -27,6 +31,7 @@ def run():
     byts = mp3_to_wav(myobj)
     resource.setDerefUri(binascii.hexlify(byts).decode('utf8'))
     
+    # Adding resource to alert and write new file
     info.getResources()[0] = resource
     alert.getInfos()[0] = info
     capparser.writeAlertToFile(alert, "test.xml")
