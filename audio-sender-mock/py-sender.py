@@ -10,7 +10,7 @@ from gtts import gTTS
 #from pydub import AudioSegment
 
 def run():
-    alert = capparser.parse(filePath="../FireTec_Example.xml")
+    alert = capparser.parse(filePath="FireTec_Example.xml")
     info = alert.getInfos()[0]
 
     resource = capparser.Resource()
