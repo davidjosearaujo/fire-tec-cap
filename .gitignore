@@ -1,1 +1,6 @@
-venv
+c-cap-parser/capparser
+*.vscode/
+*.o
+*venv
+*.mp3
+*.wav
