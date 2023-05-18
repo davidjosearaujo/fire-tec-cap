@@ -3,7 +3,7 @@
  
  Description: 
  
- by: Miguel Coelho
+ by: Miguel Coelho and David Araújo
 */
 
 #include "Arduino.h"
@@ -25,11 +25,14 @@ int port = 8080; //Porto para comunicar com o server
 
 /* Data variables
  * Fixed size for parameters with:
- *  - Radio statio name;
- *  - Program identificaion,
+ *  - Radio station name;
+ *  - Program identification,
  *  - Frequency list.
  */ 
 Parameter params[3];
+int index1 = 0;
+// Variables for real-time parsing
+String xml = "";
 //####################################
 
 //Functions
@@ -57,7 +60,7 @@ void ClientSCK::init()
   Serial.print(" Ethernet Cilent ip:  "); Serial.println(Ethernet.localIP());
 }
 
-void ClientSCK::conect_server()
+void ClientSCK::connect_server()
 {
   Ethernet_Status(); // Verifica o estado da ethernet
   Serial.print("Searching...");
@@ -78,9 +81,6 @@ void ClientSCK::conect_server()
 }
 
 void receive_param(){
-  String xml;
-  int index1 = 0;
-  
   while (client.available()){
     char c = client.read();
 
@@ -88,23 +88,20 @@ void receive_param(){
       xml.concat(c);
 
     String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
-    if (tag == "/parameter")
-      break;
 
     // Retrieve parameter values
     if (tag == "/valueName"){
-      String xmli = xml.substring(0, xml.length()-1);
-      params[index1].valueName = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
+      params[index1].valueName = xml.substring(xml.indexOf('>')+1, xml.lastIndexOf('<'));
+      xml = "";
     }else if (tag == "/value"){
-      String xmli = xml.substring(0, xml.length()-1);
-      params[index1].value = xmli.substring((xmli.lastIndexOf('>')+1),xmli.lastIndexOf('<'));
+      params[index1].value = xml.substring(xml.indexOf('>')+1, xml.lastIndexOf('<'));
       index1++;
+      break;
     }
   }
 }
 
 void receive_audio(){
-  String xml;
   String audiobyte = "";
   
   while (client.available()){
@@ -127,9 +124,6 @@ void receive_audio(){
 
 void receive_msg()
 {
-  // Variables for real-time parsing
-  String xml = "";
-  
   //report
   St1="";
   if(client.read()=='?')
@@ -147,17 +141,15 @@ void receive_msg()
     
     if (xml.indexOf('<') < xml.indexOf('>')){
       String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
-
+      xml="";
       // Detect tags of interest: <parameter>, </parameter> and <derefUri>
       if (tag == "parameter"){
         receive_param();
       } else if (tag == "derefUri"){
         WAV.CreateWav();
-        client.read();  // Discard '>' character
         receive_audio();
+        break;
       }
-      
-      xml = "";
     }
   }
 }

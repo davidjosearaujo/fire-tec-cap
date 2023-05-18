@@ -25,7 +25,8 @@ void SAVE_WAV::DeleteWav()
   if (SD.exists("ALARM.mp3"))
   {
     SD.remove("ALARM.mp3");
-    //Serial.println("Remover ALARM.wav...");
+    if (!SD.exists("ALARM.mp3"))
+      Serial.println("Old ALARM.mp3 removed!");
   }
   return;
 }

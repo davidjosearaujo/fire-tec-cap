@@ -14,23 +14,19 @@ byte netmask[] = {255, 255, 255, 0};
 
 // Variables for real-time parsing
 String xml = "";
-bool param = false;
-bool audio = false;
-String audiobyte = "";
 
 /* Data variables
  * Fixed size for parameters with:
- *  - Radio statio name;
- *  - Program identificaion,
+ *  - Radio station name;
+ *  - Program identification,
  *  - Frequency list.
  */ 
 Parameter params[3];
-int index = 0;
-
-Audio first_audio;
-Audio *temp;
+int index1 = 0;
 
 EthernetServer server = EthernetServer(50005);
+EthernetClient client;
+
 void setup()
 {
   Serial.begin(9600);
@@ -45,11 +41,54 @@ void setup()
   server.begin();
 }
 
+void receive_param(){
+  while (client.available()){
+    char c = client.read();
+
+    if (xml != "" || c == '<')
+      xml.concat(c);
+
+    String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
+
+    // Retrieve parameter values
+    if (tag == "/valueName"){
+      params[index1].valueName = xml.substring(xml.indexOf('>')+1, xml.lastIndexOf('<'));
+      xml = "";
+    }else if (tag == "/value"){
+      params[index1].value = xml.substring(xml.indexOf('>')+1, xml.lastIndexOf('<'));
+      index1++;
+      break;
+    }
+  }
+}
+
+void receive_audio(){
+  String audiobyte = "";
+  
+  while (client.available()){
+    char c = client.read();
+
+    // Write audio file
+    if(c == '<'){
+      WAV.CLOSE();
+      break;
+    }else{  // Read two characters that form the hex value and convert them to a byte
+      audiobyte.concat(c);
+      if(audiobyte.length() == 2){
+        byte hexvalue = strtol(audiobyte.c_str(), NULL, 16);
+        WAV.SAVE(hexvalue);
+        audiobyte = "";
+      }
+    }
+  }
+}
+
 void loop()
 {
   // if an incoming client connects, there will be bytes available to read:
-  EthernetClient client = server.available();
-  if (client) {
+  client = server.available();
+  while (client.available())
+  {
     char c = client.read();
 
     if (xml != "" || c == '<')
@@ -57,48 +96,17 @@ void loop()
     
     if (xml.indexOf('<') < xml.indexOf('>')){
       String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
-
+      xml = "";
+      
       // Detect tags of interest: <parameter>, </parameter> and <derefUri>
-      if (tag == "parameter" && !param){
-        param = true;
-      } else if (tag == "derefUri" && !audio){
+      if (tag == "parameter"){
+        receive_param();
+      } else if (tag == "derefUri"){
         WAV.DeleteWav();
         WAV.CreateWav();
-        audio = true;
-      }else if (tag == "/parameter" && param){
-        param = false;
+        receive_audio();
+        break;
       }
-
-      // Retrieve parameter values
-      if (param && tag == "/valueName"){
-        String xmli = xml.substring(0, xml.length()-1);
-        params[index].valueName = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
-        Serial.println(params[index].valueName);
-      }else if (param && tag == "/value"){
-        String xmli = xml.substring(0, xml.length()-1);
-        params[index].value = xmli.substring(xmli.lastIndexOf('>'),xmli.lastIndexOf('<'));
-        Serial.println(params[index].value);
-        index++;
-      }
-
-      // Write audio file
-      if (audio && c != '>'){
-        if(c == '<'){
-          WAV.CLOSE();
-          audio = false;
-        }else{
-          // Read two characters that form the hexvalue and convert them to a byte
-          audiobyte.concat(c);
-          if(audiobyte.length() == 2){
-            byte hexvalue = strtol(audiobyte.c_str(), NULL, 16);
-            WAV.SAVE(hexvalue);
-            audiobyte = "";
-          }
-        }
-      }
-      
-      if (!param && !audio)
-        xml = "";
     }
   }
 }
