@@ -7,11 +7,4 @@ typedef struct Parameter
     String value;
     struct Parameter *next;
 } Parameter;
-
-typedef struct Audio
-{
-    String value;
-    struct Audio *next;
-} Audio;
-
 #endif

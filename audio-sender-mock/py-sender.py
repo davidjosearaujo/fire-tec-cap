@@ -1,5 +1,5 @@
 #
-#   Runs with:  python3 py-sender.py 192.168.1.100:50005 hex|base64
+#   Runs with:  python3 py-sender.py 192.168.1.100:50005
 #
 import base64
 import binascii
@@ -19,22 +19,15 @@ def run():
 
     # Generating audio
     myobj = gTTS(
-        text="""To be, or not to be: that is the question:
-            Whether 'tis nobler in the mind to suffer
-            The slings and arrows of outrageous fortune""",
+        text="""To be, or not to be: that is the question
+        To be, or not to be: that is the question and the answer""",
         lang='en',
         slow=False)
 
     byts = mp3_to_wav(myobj)
     
     # Convert bytes to string representation of hex values
-    if sys.argv[2] == 'hex':
-        resource.setDerefUri(binascii.hexlify(byts).decode('utf8'))
-    elif sys.argv[2] == 'base64': # Or to base64 encoded string
-        resource.setDerefUri(str(base64.b64encode(byts))[2:-1])
-    else:
-        print("No format specified")
-        exit()
+    resource.setDerefUri(binascii.hexlify(byts).decode('utf8'))
     
     # Adding resource to alert and write new file
     info.getResources()[0] = resource
