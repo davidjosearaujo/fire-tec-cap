@@ -6,7 +6,7 @@ class ClientSCK{
   public:
     ClientSCK();
     void init();
-    void conect_server();
+    void connect_server();
     String return_receive();
     void Receive_report(char*);
     char* return_PI();
@@ -17,7 +17,14 @@ class ClientSCK{
     char ReturnPS[15];
     char ReturnPI[7];
 
+    int Time_prof();
+    int Time_start();
+    int Time_wav();
+
+    unsigned long startc, endc,startRDS;
+
   private:
+
 };
 extern ClientSCK clients;
 

@@ -7,6 +7,9 @@ class Send_Alarm{
    void init();
    void sending(char*,char*,char*,int);
    char* Result_Report();
+  
+  int Time_profsa();
+   unsigned long startsa, endsa;
 
   private:
     int pinSW;

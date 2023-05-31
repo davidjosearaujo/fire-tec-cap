@@ -31,13 +31,8 @@ Send_Alarm::Send_Alarm(int pinoSW)
 void Send_Alarm::init()
 {
   Serial1.begin(2400);
-  checks.init();
-  
-  if (!SD.begin()) 
-  {
-    Serial.println(" failed!");
-    while(true);
-  }
+  Serial1.setTimeout(500);
+
   pinMode(pinSW, OUTPUT);
   digitalWrite(pinSW, LOW);
 }
@@ -46,22 +41,22 @@ void Send_Alarm::sending(char PS[] , char PI_[], char AF[], int SWs )
 {
   //------[SEND TO RDS_ENCODER]------
   Send_RDS();
-  //Serial.println(PS); Debug
-  report[0] = checks.check_RDS(PS);
-  report[1] = checks.check_RDS(PI_);
-  report[2] = checks.check_RDS(AF);
-  //------------------------------~
-  Serial.println("SW PIN IN ON!!");//####[Debug]#####
+  //Serial1.println(AF); Serial1.println(PS);Serial1.println(PI_);//Only send rds
+  report[0] = checks.check_RDS(PS); report[1] = checks.check_RDS(PI_); report[2] = checks.check_RDS(AF); //Send and Reiceive RDS
+  //------------------------------
+  startsa=millis(); //PROFILING
   digitalWrite(SWs, HIGH); //activating the Switch
-  send_Wav("ALARM.wav", 1);
+  send_Wav("ALARM.wav", 2);
   digitalWrite(SWs, LOW); //deactivating the Switch
-  Serial.println("SW PIN IN OFF!!");//####[Debug]#####
+  endsa=millis(); //PROFILING
+  //Serial.println("SW OFF");//####[Debug]#####
+  //Serial.print(report[0]); Serial.print(report[1]); Serial.println(report[2]);//####[Debug]#####
 }
 
 void Send_RDS() //Enviar cenas defaults para o RDS encoder
 {
-  Serial1.println("ECHO=0");
-  Serial1.println("PTY=31");  //PTY=30=> Alarm Test // PTY=31=> Alarm 
+  Serial1.println(F("ECHO=0"));
+  Serial1.println(F("PTY=31"));  //PTY=30=> Alarm Test PTY=31=> Alarm 
   Serial1.println(F("RT1=Incendio na proximidade.Circule com cuidado")); //aloca na memoria Flash
 }
 
@@ -99,3 +94,7 @@ char* Send_Alarm::Result_Report()
   return report;
 }
 
+int Send_Alarm::Time_profsa() //PROFILING
+{
+  return  endsa-startsa;
+}

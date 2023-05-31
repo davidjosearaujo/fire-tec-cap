@@ -12,12 +12,13 @@
 #include <Ethernet.h>
 #include "SAVE_WAV\SAVE_WAV.h"
 #include "structures.h"
+#include <Dns.h>
 
 //########[ Pressupostos ]###############
-IPAddress ip(192, 168, 0, 21);   // IP address
+//IPAddress ip(192, 168, 0, 21);   // IP address
 byte mac[] = {0xA8, 0x61, 0x0A, 0xAE, 0x8A, 0x0A}; //mac do arduino
-byte server[] = {192, 168, 0, 23}; // server ip
-int port = 8080; //Porto para comunicar com o server
+//byte server[] = {192, 168, 0, 23}; // server ip
+int port = 80; //Porto para comunicar com o server
 #define LED 2
 //##############################################
 
@@ -30,11 +31,12 @@ int port = 8080; //Porto para comunicar com o server
  *  - Frequency list.
  */ 
 Parameter params[3];
-int index1 = 0;
+int index1 =0;
 // Variables for real-time parsing
 String xml = "";
 //####################################
-
+IPAddress timeServer;
+DNSClient dns;
 //Functions
 void receive_msg();
 void Ethernet_Status();
@@ -44,6 +46,7 @@ void report2server();
 char retorno[] = "";
 String protocol, St1;
 int FlagLED=0;
+   unsigned long startwav, endwav;//PROFILING
 
 ClientSCK::ClientSCK() {
 }
@@ -53,40 +56,56 @@ EthernetClient client;  // create an object EthernetClient for use in this sketc
 void ClientSCK::init()
 { 
   WAV.init(); 
-  Ethernet.begin(mac, ip); // initialize Ethernet device
   pinMode(LED, OUTPUT);
+  //Ethernet.begin(mac, ip); // initialize Ethernet device
+  
+  Ethernet.begin(mac);
   Ethernet_Status(); // Verifica o estado da ethernet
 
-  Serial.print(" Ethernet Cilent ip:  "); Serial.println(Ethernet.localIP());
-}
+  Serial.print(" Ethernet Cilent ip:  "); Serial.println(Ethernet.localIP()); 
+  Serial.print(" Port:  "); Serial.println(port); 
 
+  dns.begin(Ethernet.dnsServerIP());
+  //Serial.print("DNS Server IP: ");
+  //Serial.println(Ethernet.dnsServerIP());
+
+  if(dns.getHostByName("firetechswitch.ddns.net",timeServer) == 1) {
+    Serial.println(timeServer);
+  }
+  else Serial.println("DNS lookup failed");
+}
 void ClientSCK::connect_server()
 {
   Ethernet_Status(); // Verifica o estado da ethernet
   Serial.print("Searching...");
   while ( !client.connected())    //Connectar via timer?
   {
-    client.connect(server, port);
+    client.connect(timeServer, port);
   }
   WAV.DeleteWav();
   digitalWrite(LED, HIGH);  // turn the LED on (HIGH is the voltage level)
   if (client.connected()) //acho que posso eliminar isto daqui??????
   { 
-    Serial.println("Connected");
-    delay(100);
+    //Serial.println("Connected");
+    startc=millis(); //PROFILING
+    delay(10);
     receive_msg();
     client.stop();
   }
   digitalWrite(LED, LOW);   // turn the LED off by making the voltage LOW
+    endc=millis();//PROFILING
+  startRDS=endwav-startwav;//PROFILING
 }
 
-void receive_param(){
-  while (client.available()){
+void receive_param()
+{
+  while (client.available())
+  {
     char c = client.read();
+    Serial.println("HEY");
 
     if (xml != "" || c == '<')
       xml.concat(c);
-
     String tag = xml.substring(xml.lastIndexOf('<')+1, xml.lastIndexOf('>'));
 
     // Retrieve parameter values
@@ -124,6 +143,7 @@ void receive_audio(){
 
 void receive_msg()
 {
+  index1 = 0;
   //report
   St1="";
   if(client.read()=='?')
@@ -134,8 +154,11 @@ void receive_msg()
 
   while (client.available())
   {
+    //client.read();
+    ///*
     char c = client.read();
-
+    Serial.println("hey hey");
+    Serial.println(c );
     if (xml != "" || c == '<')
       xml.concat(c);
     
@@ -147,10 +170,13 @@ void receive_msg()
         receive_param();
       } else if (tag == "derefUri"){
         WAV.CreateWav();
+          startwav=millis();//PROFILING
         receive_audio();
+          endwav=millis();//PROFILING
         break;
       }
     }
+    //*/
   }
 }
 
@@ -223,5 +249,21 @@ void Ethernet_Status()
   }
   digitalWrite(LED, LOW); //Forçar o LED a Low
 }
+
+int ClientSCK::Time_prof()//PROFILING
+{
+  return (endc-startc);
+}
+
+int ClientSCK::Time_start()//PROFILING
+{
+  return startc;
+}
+
+int ClientSCK::Time_wav()//PROFILING
+{
+  return startRDS;
+}
+
 
 ClientSCK clients =  ClientSCK();

@@ -30,7 +30,7 @@ void SAVE_WAV::DeleteWav()
   if (SD.exists("ALARM.wav"))
   {
     SD.remove("ALARM.wav");
-    Serial.println("Remover Ficheiro");
+    //Serial.println("Remover Ficheiro");
     return;
   }
 }
@@ -53,7 +53,7 @@ void SAVE_WAV::SAVE(byte c)
 void SAVE_WAV::CLOSE()
 {
   myFile.close();
-  Serial.println("Close");
+  //Serial.println("Close");
 }
 
 
